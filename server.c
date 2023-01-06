@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:39:37 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/05 15:33:56 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/06 12:39:14 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,35 +63,38 @@ char	*decimal_to_msg(int *table)
 		msg[i] = (char)table[i];
 		i++;
 	}
-	printf("@%s@\n", msg);
 	return (msg);
 }
 
-char	*g_s;
-
 void	sig_handler(int sig)
 {
-	int	ct;
+	static int	ct = 0;
+	static char	*g = NULL;
+	char		*s;
 
-	ct = 0;
+	if (!g)
+		g = ft_strdup("");
 	if (sig == 30)
-	{
-		g_s = ft_strjoin(g_s, "0");
-		ct++;
-	}
+		g = ft_strjoin(g, "0");
 	else if (sig == 31)
+		g = ft_strjoin(g, "1");
+	ct++;
+	if (ct == 8)
 	{
-		g_s = ft_strjoin(g_s, "1");
-		ct++;
+		// usleep(1);
+		// printf("m here\n");
+		s = decimal_to_msg(binary_to_decimal(g));
+		write(1, &s[0], 1);
+		free(g);
+		g = NULL;
+		free(s);
+		ct = 0;
 	}
-	if (ct % 8 == 0)
-	{
-		g_s = decimal_to_msg(binary_to_decimal(g_s));
-		printf(">>%s\n", g_s);
-	}
+	// usleep(2);
+	// printf("%d\n", ct);
 }
 
-void	server(void)
+void	received_signal(void)
 {
 	signal(SIGUSR1, sig_handler);
 	signal(SIGUSR2, sig_handler);
@@ -102,10 +105,7 @@ int	main(void)
 	printf("%d\n", getpid());
 	while (1)
 	{
-		server();
+		received_signal();
 		pause();
-		// printf("%h")
-		// printf("%s\n",decimal_to_msg(binary_to_decimal(g_s)));
-		// printf("\n%s\n",decimal_to_msg(binary_to_decimal(g_s)));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:33 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/05 12:48:45 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/06 12:35:39 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,12 @@ void	client(char *pid, char *str)
 		i = 0;
 		while (s[j][i])
 		{
-			usleep(1);
 			if (s[j][i] == '0')
 				kill(ft_atoi(pid), SIGUSR1);
 			else if (s[j][i] == '1')
 				kill(ft_atoi(pid), SIGUSR2);
 			i++;
+			usleep(700);
 		}
 		j++;
 	}
