@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:39:37 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/06 12:39:14 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/06 15:49:51 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char	*decimal_to_msg(int *table)
 void	sig_handler(int sig)
 {
 	static int	ct = 0;
-	static char	*g = NULL;
+	static char	*g;
 	char		*s;
 
 	if (!g)
@@ -81,8 +81,6 @@ void	sig_handler(int sig)
 	ct++;
 	if (ct == 8)
 	{
-		// usleep(1);
-		// printf("m here\n");
 		s = decimal_to_msg(binary_to_decimal(g));
 		write(1, &s[0], 1);
 		free(g);
@@ -90,14 +88,6 @@ void	sig_handler(int sig)
 		free(s);
 		ct = 0;
 	}
-	// usleep(2);
-	// printf("%d\n", ct);
-}
-
-void	received_signal(void)
-{
-	signal(SIGUSR1, sig_handler);
-	signal(SIGUSR2, sig_handler);
 }
 
 int	main(void)
@@ -105,7 +95,8 @@ int	main(void)
 	printf("%d\n", getpid());
 	while (1)
 	{
-		received_signal();
+		signal(SIGUSR1, sig_handler);
+		signal(SIGUSR2, sig_handler);
 		pause();
 	}
 }
