@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:33 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/09 11:15:19 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/09 11:43:33 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,14 +103,17 @@ int	main(int argc, char *argv[])
 {
 	int	i;
 
-	if (argv[1] == 0 || argv[2] == 0)
+	if (argc != 3)
+	{
+		ft_putstr_fd("\x1B[31mERROR : ./client + pid + message\n");
 		return (0);
+	}
 	i = 0;
 	while (argv[1][i])
 	{
 		if (ft_isdigit((int)argv[1][i]) == 0)
 		{
-			ft_putstr_fd("wrong pid\n");
+			ft_putstr_fd("\x1B[31mwrong pid\n");
 			return (0);
 		}
 		i++;
