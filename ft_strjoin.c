@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 07:54:58 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/06 11:22:48 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/09 10:46:03 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*ft_strdup(const char *s1)
 	return (s2);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+size_t	ft_strlcpy(char *dst, char *src, size_t size)
 {
 	size_t	i;
 
@@ -46,7 +46,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 	return (ft_strlen(src));
 }
 
-size_t	ft_strlcat(char *dst, const char *src, size_t n)
+size_t	ft_strlcat(char *dst, char *src, size_t n)
 {
 	size_t	i;
 	size_t	d;
@@ -66,7 +66,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t n)
 	return (d + ft_strlen(src));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	int		len;
 	char	*sj;
@@ -83,5 +83,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	ft_strlcpy(sj, s1, d + 1);
 	ft_strlcat(sj, s2, len + 1);
+	free(s1);
 	return (sj);
 }

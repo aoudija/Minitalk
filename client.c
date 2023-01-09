@@ -6,7 +6,7 @@
 /*   By: aoudija <aoudija@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 13:24:33 by aoudija           #+#    #+#             */
-/*   Updated: 2023/01/06 12:35:39 by aoudija          ###   ########.fr       */
+/*   Updated: 2023/01/09 11:15:19 by aoudija          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*decimal_to_binary(int n)
 		nb = nb / 2;
 		i++;
 	}
-	str = malloc(9);
+	str = malloc(8);
 	str[8] = 0;
 	j = 8 - i;
 	i = 7;
@@ -66,11 +66,19 @@ char	**msg_in_binary(char *str)
 	return (s);
 }
 
-void	client(char *pid, char *str)
+int	ft_isdigit(int c)
+{
+	if (c <= 57 && c >= 48)
+		return (1);
+	return (0);
+}
+
+void	client(int pid, char *str)
 {
 	char	**s;
 	int		i;
 	int		j;
+	char	c;
 
 	j = 0;
 	s = msg_in_binary(str);
@@ -80,19 +88,32 @@ void	client(char *pid, char *str)
 		while (s[j][i])
 		{
 			if (s[j][i] == '0')
-				kill(ft_atoi(pid), SIGUSR1);
+				kill(pid, SIGUSR1);
 			else if (s[j][i] == '1')
-				kill(ft_atoi(pid), SIGUSR2);
-			i++;
+				kill(pid, SIGUSR2);
 			usleep(700);
+			i++;
 		}
 		j++;
 	}
+	ft_free(s);
 }
 
 int	main(int argc, char *argv[])
 {
-	client(argv[1], argv[2]);
-	while (1)
-		;
+	int	i;
+
+	if (argv[1] == 0 || argv[2] == 0)
+		return (0);
+	i = 0;
+	while (argv[1][i])
+	{
+		if (ft_isdigit((int)argv[1][i]) == 0)
+		{
+			ft_putstr_fd("wrong pid\n");
+			return (0);
+		}
+		i++;
+	}
+	client(ft_atoi(argv[1]), argv[2]);
 }
